@@ -1,0 +1,18 @@
+Package: CausalChinaShock
+Type: Package
+Title: Replication and Extension of the China Shock paper.
+Version: 0.1
+Date: 2016-03-24
+Authors@R: person("Nicholas", "Potter", email=potterzot@gmail.com", role=c("aut", "cre")
+URL: http://github.com/potterzot/CausalChinaShock
+BugReports: http://github.com/potterzot/CausalChinaShock/issues
+Maintainer: Nicholas Potter <potterzot@gmail.com>
+Description: This package contains functions for the replication and extension of
+  "The China Shock", a paper by Autor, Dorn, and Hanson (2016). In particular, it
+  approaches things from a causal bayesian perspective using CausalImpact.
+License: MIT + file LICENSE
+LazyData: TRUE
+Imports:
+  CausalImpact
+Suggests:
+  testthat

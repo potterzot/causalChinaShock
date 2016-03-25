@@ -1,0 +1,154 @@
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /Users/daviddorn/Dropbox/Current Projects/china-syndrome/AER-PublishedVersion/Public Release Data/log/czone_analysis_preperiod.log
+  log type:  text
+ opened on:   8 Jan 2013, 11:29:45
+
+. 
+. use ../dta/workfile_china_preperiod.dta, clear
+
+. 
+. 
+. ***********************************************
+. * Results by period, 1970-2007
+. ***********************************************
+. 
+. eststo clear
+
+. eststo: ivregress 2sls d_sh_empl_mfg (d_tradeusch_pw=d_tradeotch_pw_lag) [aw=timepwt48] if yr==1990, cluster(statefip)
+(sum of wgt is   1.0000e+00)
+
+Instrumental variables (2SLS) regression               Number of obs =     722
+                                                       Wald chi2(1)  =   24.00
+                                                       Prob > chi2   =  0.0000
+                                                       R-squared     =       .
+                                                       Root MSE      =  1.7336
+
+                              (Std. Err. adjusted for 48 clusters in statefip)
+------------------------------------------------------------------------------
+             |               Robust
+d_sh_empl_~g |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+d_tradeusc~w |  -.8875124     .18116    -4.90   0.000    -1.242579   -.5324454
+       _cons |   -1.05649   .1932492    -5.47   0.000    -1.435252   -.6777288
+------------------------------------------------------------------------------
+Instrumented:  d_tradeusch_pw
+Instruments:   d_tradeotch_pw_lag
+(est1 stored)
+
+. eststo: ivregress 2sls d_sh_empl_mfg (d_tradeusch_pw=d_tradeotch_pw_lag) [aw=timepwt48] if yr==2000, cluster(statefip)
+(sum of wgt is   1.0000e+00)
+
+Instrumental variables (2SLS) regression               Number of obs =     722
+                                                       Wald chi2(1)  =  125.00
+                                                       Prob > chi2   =  0.0000
+                                                       R-squared     =  0.1391
+                                                       Root MSE      =  1.6659
+
+                              (Std. Err. adjusted for 48 clusters in statefip)
+------------------------------------------------------------------------------
+             |               Robust
+d_sh_empl_~g |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+d_tradeusc~w |  -.7183816   .0642545   -11.18   0.000    -.8443181   -.5924451
+       _cons |  -.8460127   .2555812    -3.31   0.001    -1.346943   -.3450828
+------------------------------------------------------------------------------
+Instrumented:  d_tradeusch_pw
+Instruments:   d_tradeotch_pw_lag
+(est2 stored)
+
+. eststo: ivregress 2sls d_sh_empl_mfg (d_tradeusch_pw=d_tradeotch_pw_lag) t2000 [aw=timepwt48] if yr>=1990, cluster(statefip)
+(sum of wgt is   2.0000e+00)
+
+Instrumental variables (2SLS) regression               Number of obs =    1444
+                                                       Wald chi2(2)  =  153.90
+                                                       Prob > chi2   =  0.0000
+                                                       R-squared     =  0.0664
+                                                       Root MSE      =   1.686
+
+                              (Std. Err. adjusted for 48 clusters in statefip)
+------------------------------------------------------------------------------
+             |               Robust
+d_sh_empl_~g |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+d_tradeusc~w |  -.7460301   .0680391   -10.96   0.000    -.8793842   -.6126759
+       t2000 |   .4444448   .3237889     1.37   0.170    -.1901698    1.079059
+       _cons |  -1.217819   .1385799    -8.79   0.000     -1.48943    -.946207
+------------------------------------------------------------------------------
+Instrumented:  d_tradeusch_pw
+Instruments:   t2000 d_tradeotch_pw_lag
+(est3 stored)
+
+. 
+. eststo: ivregress 2sls d_sh_empl_mfg (d_tradeusch_pw_future=d_tradeotch_pw_lag_future) [aw=timepwt48] if yr==1970, cluster(statefip)
+(sum of wgt is   1.0000e+00)
+
+Instrumental variables (2SLS) regression               Number of obs =     722
+                                                       Wald chi2(1)  =    8.34
+                                                       Prob > chi2   =  0.0039
+                                                       R-squared     =  0.0435
+                                                       Root MSE      =   2.166
+
+                              (Std. Err. adjusted for 48 clusters in statefip)
+------------------------------------------------------------------------------
+             |               Robust
+d_sh_empl_~g |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+d_tradeusc~e |   .4311331   .1492742     2.89   0.004     .1385611    .7237051
+       _cons |  -.9544705   .3158107    -3.02   0.003    -1.573448   -.3354929
+------------------------------------------------------------------------------
+Instrumented:  d_tradeusch_pw_future
+Instruments:   d_tradeotch_pw_lag_future
+(est4 stored)
+
+. eststo: ivregress 2sls d_sh_empl_mfg (d_tradeusch_pw_future=d_tradeotch_pw_lag_future) [aw=timepwt48] if yr==1980, cluster(statefip)
+(sum of wgt is   1.0000e+00)
+
+Instrumental variables (2SLS) regression               Number of obs =     722
+                                                       Wald chi2(1)  =    1.07
+                                                       Prob > chi2   =  0.3019
+                                                       R-squared     =       .
+                                                       Root MSE      =  2.0811
+
+                              (Std. Err. adjusted for 48 clusters in statefip)
+------------------------------------------------------------------------------
+             |               Robust
+d_sh_empl_~g |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+d_tradeusc~e |  -.1295626   .1255041    -1.03   0.302     -.375546    .1164209
+       _cons |  -1.831749   .3306781    -5.54   0.000    -2.479867   -1.183632
+------------------------------------------------------------------------------
+Instrumented:  d_tradeusch_pw_future
+Instruments:   d_tradeotch_pw_lag_future
+(est5 stored)
+
+. eststo: ivregress 2sls d_sh_empl_mfg (d_tradeusch_pw_future=d_tradeotch_pw_lag_future) t1980 [aw=timepwt48] if yr>=1970 & yr<1990, cluster(statefip)
+(sum of wgt is   2.0000e+00)
+
+Instrumental variables (2SLS) regression               Number of obs =    1444
+                                                       Wald chi2(2)  =   62.60
+                                                       Prob > chi2   =  0.0000
+                                                       R-squared     =  0.1814
+                                                       Root MSE      =  2.1307
+
+                              (Std. Err. adjusted for 48 clusters in statefip)
+------------------------------------------------------------------------------
+             |               Robust
+d_sh_empl_~g |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+d_tradeusc~e |    .148424   .0946698     1.57   0.117    -.0371255    .3339735
+       t1980 |  -1.944921   .2470447    -7.87   0.000     -2.42912   -1.460723
+       _cons |  -.4145781   .2992556    -1.39   0.166    -1.001108    .1719521
+------------------------------------------------------------------------------
+Instrumented:  d_tradeusch_pw_future
+Instruments:   t1980 d_tradeotch_pw_lag_future
+(est6 stored)
+
+. esttab using ../log/tab_ipw_mfg_byperiod.scsv, b(%9.3f) se(%9.3f) nostar r2 drop(t*) replace
+(output written to ../log/tab_ipw_mfg_byperiod.scsv)
+
+. 
+. 
+end of do-file
+
+. exit

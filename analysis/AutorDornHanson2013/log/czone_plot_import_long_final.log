@@ -1,0 +1,140 @@
+-------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /Users/dautor/Dropbox/Projects-Active/china-syndrome/AER-PublishedVersion/Public Rel
+> ease Data/do/../log/czone_plot_import_long_final.log
+  log type:  text
+ opened on:   8 Jan 2013, 23:50:05
+
+. 
+. use ../dta/workfile_china_long.dta, clear
+
+. 
+. 
+. * Descriptive stats
+. summ d_pct_manuf d_tradeusch_pw d_tradeotch_pw_lag [aw=timepwt48], detail
+
+        Change % Manufacturing Emp in Working Age Pop
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%    -11.66648      -23.47008
+ 5%    -7.441755      -18.19261
+10%    -6.413928      -17.38004       Obs                 722
+25%    -5.234255      -16.77631       Sum of Wgt.  1.00000001
+
+50%    -3.962389                      Mean          -3.993128
+                        Largest       Std. Dev.      2.305448
+75%    -2.595771       5.823913
+90%    -1.427121       5.823914       Variance       5.315089
+95%    -.7576622       5.823914       Skewness      -.9066269
+99%     1.533757       6.550084       Kurtosis       8.114413
+
+            Change in Import Exposure per Worker
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     .4014175       1.57e-06
+ 5%     .7666237       2.39e-06
+10%     1.393954       3.74e-06       Obs                 722
+25%     2.128872       5.48e-06       Sum of Wgt.  1.00000001
+
+50%     3.117048                      Mean           3.470136
+                        Largest       Std. Dev.      2.539366
+75%     3.824651       24.14037
+90%     6.066942       26.77527       Variance       6.448382
+95%     8.076635       41.34162       Skewness       3.781284
+99%     12.32271       49.00498       Kurtosis       36.61519
+
+          Instrument for Change in Import Exposure
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     .2899105      -.1118116
+ 5%     .8597637      -.0600724
+10%     1.291967       -.024347       Obs                 722
+25%     2.092066      -.0100589       Sum of Wgt.  1.00000001
+
+50%     3.001587                      Mean            3.35121
+                        Largest       Std. Dev.      2.057622
+75%     4.149505        14.4215
+90%     5.434791       18.37481       Variance       4.233809
+95%     7.099463       24.98661       Skewness        2.60471
+99%       11.742       27.95807       Kurtosis       18.82532
+
+. 
+. * 2SLS 1st Stage Regression
+. reg d_tradeusch_pw d_tradeotch_pw_lag l_shind_manuf_cbp [aw=timepwt48], cluster(statefip)
+(sum of wgt is   1.0000e+00)
+
+Linear regression                                      Number of obs =     722
+                                                       F(  2,    47) =  125.04
+                                                       Prob > F      =  0.0000
+                                                       R-squared     =  0.6689
+                                                       Root MSE      =  1.4633
+
+                                    (Std. Err. adjusted for 48 clusters in statefip)
+------------------------------------------------------------------------------------
+                   |               Robust
+    d_tradeusch_pw |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------------+----------------------------------------------------------------
+d_tradeotch_pw_lag |   .8150955   .0917686     8.88   0.000     .6304809    .9997102
+ l_shind_manuf_cbp |    7.04191   1.350563     5.21   0.000     4.324927    9.758893
+             _cons |    -.71872   .2504762    -2.87   0.006    -1.222613    -.214827
+------------------------------------------------------------------------------------
+
+. 
+. #delimit;
+delimiter now ;
+. set scheme s2color;
+
+. avplot d_tradeotch_pw_lag,
+> t1("First Stage Regression, 1990-2007")
+> xtitle("Chg in Predicted Import Exposure per Worker (in kUSD)")
+> ytitle("Change in Import Exposure per Worker (in kUSD)")
+> msymbol(circle)
+> ylabel(-10(10)50)
+> saving(../gph/mfg_imppw_9007long_2sls1_av.gph, replace);
+(file ../gph/mfg_imppw_9007long_2sls1_av.gph saved)
+
+. #delimit cr
+delimiter now cr
+. 
+. * Reduced Form OLS
+. reg d_pct_manuf d_tradeotch_pw_lag l_shind_manuf_cbp [aw=timepwt48], cluster(statefip)
+(sum of wgt is   1.0000e+00)
+
+Linear regression                                      Number of obs =     722
+                                                       F(  2,    47) =   39.27
+                                                       Prob > F      =  0.0000
+                                                       R-squared     =  0.3939
+                                                       Root MSE      =  1.7973
+
+                                    (Std. Err. adjusted for 48 clusters in statefip)
+------------------------------------------------------------------------------------
+                   |               Robust
+       d_pct_manuf |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------------+----------------------------------------------------------------
+d_tradeotch_pw_lag |  -.3397627   .0711647    -4.77   0.000    -.4829277   -.1965977
+ l_shind_manuf_cbp |  -10.77089   3.219114    -3.35   0.002    -17.24691   -4.294863
+             _cons |  -.6255135   .4631327    -1.35   0.183    -1.557216    .3061893
+------------------------------------------------------------------------------------
+
+. #delimit;
+delimiter now ;
+. set scheme s2color;
+
+. avplot d_tradeotch_pw_lag,
+> t1("Change in Manufacturing Emp by Commuting Zone, 1990-2007")
+> xtitle("Chg in Predicted Import Exposure per Worker (in kUSD)")
+> ytitle("Change % Manufacturing Emp in Working Age Pop")
+> msymbol(circle)
+> saving(../gph/mfg_imppw_9007long_olsred_av.gph, replace);
+(file ../gph/mfg_imppw_9007long_olsred_av.gph saved)
+
+. #delimit cr
+delimiter now cr
+. 
+. log close
+      name:  <unnamed>
+       log:  /Users/dautor/Dropbox/Projects-Active/china-syndrome/AER-PublishedVersion/Public Rel
+> ease Data/do/../log/czone_plot_import_long_final.log
+  log type:  text
+ closed on:   8 Jan 2013, 23:50:09
+-------------------------------------------------------------------------------------------------
